@@ -1,0 +1,691 @@
+<project name="Ivy.Tasks"
+    xmlns:ivy="http://ant.apache.org/ivy"
+    xmlns:jacoco="antlib:org.jacoco.ant">
+
+    <!-- Used for the MANIFEST.INF file -->
+    <tstamp>
+	<format property="build.date"
+	    pattern="dd-MMMM-yyyy hh:mm:ss aa zzzz"/>
+    </tstamp>
+
+    <!-- Add Ivy Tasks -->
+    <taskdef uri="http://ant.apache.org/ivy"
+	resource="org/apache/ivy/ant/antlib.xml">
+	<classpath>
+	    <fileset dir="${ivy.dir}">
+		<include name="ivy*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+    <ivy:settings file="${ivy.dir}/ivysettings.xml"/>
+
+    <!-- Add Findbugs Task -->
+    <property name="findbugs.home"
+	value="${ivy.dir}/findbugs/findbugs-2.0.1"/>
+    <property name="findbugs.default.output" value="xml"/>
+
+    <taskdef resource="edu/umd/cs/findbugs/anttask/tasks.properties">
+	<classpath>
+	    <fileset dir="${ivy.dir}/findbugs">
+		<include name="findbugs-ant*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+
+    <macrodef name="findbugs.macro"
+	description="Findbugs Macro to define standard excludes">
+	<attribute name="home"	default="${findbugs.home}"/>
+	<attribute name="output" default="${findbugs.default.output}"/>
+	<attribute name="outputFile" default="${basedir}/target/findbugs.${findbugs.default.output}"/>
+	<attribute name="debug" default="false"/>
+	<attribute name="effort" default="default"/>
+	<attribute name="excludeFilter" default="${findbugs.home}/excludeFilter.xml"/>
+	<element name="includes" optional="false" implicit="true"/>
+	<sequential>
+	    <findbugs home="@{home}"
+		output="@{output}"
+		outputFile="@{outputFIle}"
+		debug="@{debug}"
+		effort="@{effort}"
+		excludeFilter="@{excludeFilter}">
+		<includes/>
+	    </findbugs>
+	</sequential>
+    </macrodef>
+	
+    <!-- Add CheckStyle Tasks -->
+    <property name="checkstyle.home"	value="${ivy.dir}/checkstyle"/>
+
+    <taskdef resource="checkstyletask.properties">
+	<classpath>
+	    <fileset dir="${checkstyle.home}">
+		<include name="checkstyle*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+
+
+    <macrodef name="checkstyle.macro"
+	description="Checkstyle Macro defines the standard way we'll implement it">
+	<attribute name="config" default="${checkstyle.home}/checkstyle_checks.xml"/>
+	<attribute name="failOnViolation" default="false"/>
+	<attribute name="formatter.type" default="xml"/>
+	<attribute name="formatter.toFile" default="${basedir}/target/checkstyle.xml"/>
+	<element name="includes" optional="false" implicit="true"/>
+	<sequential>
+	    <checkstyle config="@{config}"
+		failOnViolation="@{failOnViolation}">
+		<formatter type="@{formatter.type}"
+		    tofile="@{formatter.tofile}"/>
+		<includes/>
+	    </checkstyle>
+	</sequential>
+    </macrodef>
+
+    <!-- Add CPD Task -->
+    <property name="pmd.home"	value="${ivy.dir}/pmd"/>
+
+    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+	<classpath>
+	    <fileset dir="${pmd.home}">
+		<include name="*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+
+    <macrodef name="cpd.macro"
+	description="Copy Paste Detector Macro">
+	<attribute name="minimumTokenCount"	default="100"/>
+	<attribute name="format"		default="xml"/>
+	<attribute name="outputFile" 		default="${basedir}/target/cpd.xml"/>
+	<attribute name="ignoreLiterals"	default="true"/>
+	<attribute name="ignoreIdentifiers"	default="true"/>
+	<attribute name="language"		default="java"/>
+	<element name="includes" optional="false" implicit="true"/>
+	<sequential>
+	    <cpd minimumTokenCount="@{minimumTokenCount}"
+		outputFile="@{outputFile}"
+		format="@{format}"
+		ignoreLiterals="@{ignoreLiterals}"
+		ignoreIdentifiers="@{ignoreIdentifiers}"
+		language="@{language}">
+		<includes/>
+	    </cpd>
+	</sequential>
+    </macrodef>
+
+
+    <!-- Add PMD Task -->
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+	<classpath>
+	    <fileset dir="${pmd.home}">
+		<include name="*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+	
+    <property name="pmd.default.file.type" value="xml" />
+    <macrodef name="pmd.macro"
+	description="Complete Java Checking with all rule sets">
+	<attribute name="shortFileNames"  default="true"/>
+	<attribute name="file.type" default="${pmd.default.file.type}"/>
+	<attribute name="file.name" default="${basedir}/target/pmd.xml"/>
+	<element name="source" optional="false" implicit="false"/>
+	<sequential>
+	    <pmd shortFileNames="@{shortFileNames}">
+		<ruleset>rulesets/java/basic.xml</ruleset>
+		<ruleset>rulesets/java/braces.xml</ruleset>
+		<ruleset>rulesets/java/clone.xml</ruleset>
+		<ruleset>rulesets/java/codesize.xml</ruleset>
+		<ruleset>rulesets/java/comments.xml</ruleset>
+		<ruleset>rulesets/java/coupling.xml</ruleset>
+		<ruleset>rulesets/java/design.xml</ruleset>
+		<ruleset>rulesets/java/empty.xml</ruleset>
+		<ruleset>rulesets/java/finalizers.xml</ruleset>
+		<ruleset>rulesets/java/imports.xml</ruleset>
+		<ruleset>rulesets/java/j2ee.xml</ruleset>
+		<ruleset>rulesets/java/logging-jakarta-commons.xml</ruleset>
+		<ruleset>rulesets/java/logging-java.xml</ruleset>
+		<ruleset>rulesets/java/naming.xml</ruleset>
+		<ruleset>rulesets/java/naming.xml</ruleset>
+		<ruleset>rulesets/java/optimizations.xml</ruleset>
+		<ruleset>rulesets/java/strictexception.xml</ruleset>
+		<ruleset>rulesets/java/strings.xml</ruleset>
+		<ruleset>rulesets/java/sunsecure.xml</ruleset>
+		<ruleset>rulesets/java/typeresolution.xml</ruleset>
+		<ruleset>rulesets/java/unnecessary.xml</ruleset>
+		<ruleset>rulesets/java/unusedcode.xml</ruleset>
+		<formatter type="@{file.type}"
+		    toFile="@{file.name}"/>
+		<source/>
+	    </pmd>
+	</sequential>
+    </macrodef>
+
+    <!--Deprecated: Use "pmd.macro" instead -->
+    <macrodef name="pmd.java"
+	description="Complete Java Checking with all rule sets">
+	<attribute name="shortFileNames"  default="${pmd.shortFileNames}"/>
+	<attribute name="file.type" default="${pmd.formatter.type}"/>
+	<attribute name="file.name" default="${pmd.formatter.toFile}"/>
+	<element name="source" optional="false"/>
+	<sequential>
+	    <echo message="Warning: This macro is deprecated. Use the &quot;pmd.macro&quot; instead."/>
+	    <pmd shortFileNames="@{shortFileNames}">
+		<ruleset>rulesets/java/basic.xml</ruleset>
+		<ruleset>rulesets/java/braces.xml</ruleset>
+		<ruleset>rulesets/java/clone.xml</ruleset>
+		<ruleset>rulesets/java/codesize.xml</ruleset>
+		<ruleset>rulesets/java/comments.xml</ruleset>
+		<ruleset>rulesets/java/coupling.xml</ruleset>
+		<ruleset>rulesets/java/design.xml</ruleset>
+		<ruleset>rulesets/java/empty.xml</ruleset>
+		<ruleset>rulesets/java/finalizers.xml</ruleset>
+		<ruleset>rulesets/java/imports.xml</ruleset>
+		<ruleset>rulesets/java/j2ee.xml</ruleset>
+		<ruleset>rulesets/java/logging-jakarta-commons.xml</ruleset>
+		<ruleset>rulesets/java/logging-java.xml</ruleset>
+		<ruleset>rulesets/java/naming.xml</ruleset>
+		<ruleset>rulesets/java/naming.xml</ruleset>
+		<ruleset>rulesets/java/optimizations.xml</ruleset>
+		<ruleset>rulesets/java/strictexception.xml</ruleset>
+		<ruleset>rulesets/java/strings.xml</ruleset>
+		<ruleset>rulesets/java/sunsecure.xml</ruleset>
+		<ruleset>rulesets/java/typeresolution.xml</ruleset>
+		<ruleset>rulesets/java/unnecessary.xml</ruleset>
+		<ruleset>rulesets/java/unusedcode.xml</ruleset>
+		<formatter type="@{file.type}"
+		    toFile="@{file.name}"/>
+		<source/>
+	    </pmd>
+	</sequential>
+    </macrodef>
+
+    <!-- JaCoCo Tasks -->
+    <property name="jacoco.dir" value="${ivy.dir}/JaCoCo"/>
+    <property name="jacoco.target.dir" value="${basedir}/target/jacoco"/>
+    <property name="jacoco.default.destfile" value="${jacoco.target.dir}/jacoco.exec"/>
+
+    <taskdef uri="antlib:org.jacoco.ant"
+	resource="org/jacoco/ant/antlib.xml">
+	<classpath path="${jacoco.dir}/jacocoant.jar"/>
+    </taskdef>
+
+    <macrodef  name="jacoco.coverage"
+	description="Jacoco Coverage Task"
+	xmlns:jacoco="antlib:org.jacoco.ant">
+	<attribute name="destfile" default="${jacoco.default.destfile}"/>
+	<attribute name="append" default="false"/>
+	<element name="task" optional="false" implicit="true"/>
+	<sequential>
+	    <mkdir dir="${jacoco.target.dir}"/>
+	    <jacoco:coverage
+		destfile="@{destfile}"
+		append="@{append}">
+		<task/>
+	    </jacoco:coverage>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="jacoco.report"
+	description="Generate Jacoco Reports"
+	xmlns:jacoco="antlib:org.jacoco.ant">
+	<attribute name="jacoco.report.name" default="JUnit Test Coverage Report"/>
+	<attribute name="jacoco.executiondata.file" default="${jacoco.default.destfile}"/>
+	<attribute name="jacoco.html.destdir" default="${jacoco.target.dir}/html"/>
+	<attribute name="jacoco.xml.destfile" default="${jacoco.target.dir}/jacoco.xml"/>
+	<element name="source.and.class.files" optional="false" implicit="true"/>
+	<sequential>
+	    <jacoco:report>
+		<executiondata>
+		    <file file="@{jacoco.executiondata.file}"/>
+		</executiondata>
+
+		<structure name="@{jacoco.report.name}">
+		    <source.and.class.files/>
+		</structure>
+		<html destdir="@{jacoco.html.destdir}"/>
+		<xml  destfile="@{jacoco.xml.destfile}"/>
+	    </jacoco:report>
+	</sequential>
+    </macrodef>
+
+    <property name="jibx.home" value="${ivy.dir}/jibx"/>
+
+    <taskdef name="jibx" classname="org.jibx.binding.ant.CompileTask">
+	<classpath>
+	    <fileset dir="${jibx.home}" includes="*.jar"/>
+	</classpath>
+    </taskdef>
+
+    <!-- And Antcontrib Tasks                       -->
+    <!-- This defines a whole slew of useful tasks. -->
+    <!-- See http://antcontrib.sourceforge.net      -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+	<classpath>
+	    <fileset dir="${ivy.dir}/antcontrib">
+		<include name="ant-contrib*.jar"/>
+	    </fileset>
+	</classpath>
+    </taskdef>
+
+    <!-- Compile Macro                              -->
+    <!-- This macro is used to help standardize the -->
+    <!-- compilation of Java code.                  -->
+    <!-- The Macro parameters match the parameters  -->
+    <!-- of the 'javac' task. There in one extra    -->
+    <!-- parameter: 'lint' that will turn on and    -->
+    <!-- off linting of the compile code            -->
+
+
+    <macrodef name="javac.macro"
+	description="Compile Java Source">
+	<attribute name="destdir"	default="${basedir}/target/classes"/>
+	<attribute name="fork"		default="false"/>
+	<attribute name="nowarn"	default="false"/>
+	<attribute name="debug"		default="true"/>
+	<attribute name="debuglevel"	default="lines,vars,source"/>
+	<attribute name="verbose"	default="false"/>
+	<attribute name="listfiles"	default="false"/>
+	<attribute name="source"	default="1.6"/>
+	<attribute name="target"	default="1.6"/>
+	<attribute name="includeAntRuntime" default="false"/>
+	<attribute name="includeJavaRuntime" default="false"/>
+	<attribute name="failonerror"	default="true"/>
+	<attribute name="executable"	default="${java.home}/../bin/javac"/>
+	<attribute name="memoryInitialSize" default="64m"/>
+	<attribute name="memoryMaximumSize"	default="512m"/>
+	<attribute name="includeDestClasses" default="true"/>
+	<attribute name="lint"		default="true"/>
+
+	<element name="includes"	optional="false" implicit="true"
+	    description="Same nested elements as 'javac' task"/>
+
+	<sequential>
+	    <mkdir dir="@{destdir}"/>
+	    <if>
+		<and>
+		    <istrue value="@{fork}"/>
+		    <istrue value="@{lint}"/>
+		</and>
+		<then>
+		    <javac fork="true"
+			destdir="@{destdir}"
+			nowarn="@{nowarn}"
+			debug="@{debug}"
+			debuglevel="@{debuglevel}"
+			verbose="@{verbose}"
+			listfiles="@{listfiles}"
+			deprecation="@{deprecation}"
+			source="@{source}"
+			target="@{target}"
+			includeAntRuntime="@{includeAntRuntime}"
+			includeJavaRuntime="@{includeJavaRuntime}"
+			failonerror="@{failonerror}"
+			includeDestClasses="@{includeDestClasses}"
+			executable="@{executable}"
+			memoryInitialSize="@{memoryInitialSize}"
+			memoryMaximumSize="@{memoryMaximumSize}">
+			<compilerarg value="-Xlint"/>
+			<compilerarg value="-Xmaxwarns"/>
+			<compilerarg value="9999"/>
+			<includes/>
+		    </javac>
+		</then>
+	    </if>
+	    <if>
+		<and>
+		    <istrue value="@{fork}"/>
+		    <isfalse value="@{lint}"/>
+		</and>
+		<then>
+		    <javac fork="true"
+			destdir="@{destdir}"
+			nowarn="@{nowarn}"
+			debug="@{debug}"
+			debuglevel="@{debuglevel}"
+			verbose="@{verbose}"
+			listfiles="@{listfiles}"
+			deprecation="@{deprecation}"
+			source="@{source}"
+			target="@{target}"
+			includeAntRuntime="@{includeAntRuntime}"
+			includeJavaRuntime="@{includeJavaRuntime}"
+			failonerror="@{failonerror}"
+			includeDestClasses="@{includeDestClasses}"
+			executable="@{executable}"
+			memoryInitialSize="@{memoryInitialSize}"
+			memoryMaximumSize="@{memoryMaximumSize}">
+			<includes/>
+		    </javac>
+		</then>
+	    </if>
+	    <if>
+		<and>
+		    <isfalse value="@{fork}"/>
+		    <istrue value="@{lint}"/>
+		</and>
+		<then>
+		    <javac fork="false"
+			destdir="@{destdir}"
+			nowarn="@{nowarn}"
+			debug="@{debug}"
+			debuglevel="@{debuglevel}"
+			verbose="@{verbose}"
+			listfiles="@{listfiles}"
+			deprecation="@{deprecation}"
+			source="@{source}"
+			target="@{target}"
+			includeAntRuntime="@{includeAntRuntime}"
+			includeJavaRuntime="@{includeJavaRuntime}"
+			includeDestClasses="@{includeDestClasses}"
+			failonerror="@{failonerror}">
+			<compilerarg value="-Xlint"/>
+			<compilerarg value="-Xmaxwarns"/>
+			<compilerarg value="9999"/>
+			<includes/>
+		    </javac>
+		</then>
+	    </if>
+	    <if>
+		<and>
+		    <isfalse value="@{fork}"/>
+		    <isfalse value="@{lint}"/>
+		</and>
+		<then>
+		    <javac fork="false"
+			destdir="@{destdir}"
+			nowarn="@{nowarn}"
+			debug="@{debug}"
+			debuglevel="@{debuglevel}"
+			verbose="@{verbose}"
+			listfiles="@{listfiles}"
+			deprecation="@{deprecation}"
+			source="@{source}"
+			target="@{target}"
+			includeAntRuntime="@{includeAntRuntime}"
+			includeJavaRuntime="@{includeJavaRuntime}"
+			includeDestClasses="@{includeDestClasses}"
+			failonerror="@{failonerror}">
+			<includes/>
+		    </javac>
+		</then>
+	    </if>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="jar.macro">
+	<attribute name="destfile"/>
+	<attribute name="pom.properties.dir"	default="${basedir}/target"/>
+	<attribute name="pom.xml.dir"		default="${basedir}/target/archive"/>
+	<attribute name="pom.xml"		default="pom.xml"/>
+	<attribute name="pom.properties"	default="pom.properties"/>
+	<element   name="includes"		implicit="true"/>
+
+	<sequential>
+
+	    <fail message="Error: Must resolve &quot;ivy.xml&quot; file before using jar macro">
+		<condition>
+		    <not>
+			<isset property="ivy.resolved.file"/>
+		    </not>
+		</condition>
+	    </fail>
+
+	    <mkdir dir="@{pom.xml.dir}"/>
+	    <mkdir dir="@{pom.properties.dir}"/>
+
+	    <property environment="env"/>
+
+	    <property name="env.BUILD_NUMBER"	value="dev build"/>
+	    <property name="env.JOB_NAME"	value="dev build"/>
+	    <property name="env.SVN_REVISION"	value="dev build"/>
+
+	    <ivy:makepom ivyfile="${ivy.resolved.file}"
+		pomfile="@{pom.xml.dir}/@{pom.xml}"/>
+
+	    <echo file="@{pom.properties.dir}/@{pom.properties}">
+# Generated by Ivy
+# ${build.date}
+version=${ivy.revision}
+groupId=${ivy.organisation}
+artifactId=${ivy.module}
+	    </echo>
+	    <jar destfile="@{destfile}">
+		<manifest>
+		    <section name="Module-Information">
+			<attribute name="Group-Id"	value="${ivy.organisation}"/>
+			<attribute name="Artifact-Id"	value="${ivy.module}"/>
+			<attribute name="Version"	value="${ivy.revision}"/>
+		    </section>
+		    <section name="Build-Information">
+			<attribute name="Project-Name"	value="${env.JOB_NAME}"/>
+			<attribute name="Build-Number"	value="${env.BUILD_NUMBER}"/>
+			<attribute name="SVN-Revision"	value="${env.SVN_REVISION}"/>
+			<attribute name="Build-Date"	value="${build.date}"/>
+		    </section>
+		</manifest>
+		<zipfileset dir="@{pom.properties.dir}"
+		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+		    <include name="@{pom.properties}"/>
+		</zipfileset>
+		<zipfileset dir="@{pom.xml.dir}"
+		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+		    <include name="@{pom.xml}"/>
+		</zipfileset>
+		<includes/>
+	    </jar>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="war.macro">
+	<attribute name="destfile"/>
+	<attribute name="webxml"		default=""/>
+	<attribute name="pom.properties.dir"	default="${basedir}/target"/>
+	<attribute name="pom.xml.dir"		default="${basedir}/target/archive"/>
+	<attribute name="pom.xml"		default="pom.xml"/>
+	<attribute name="pom.properties"	default="pom.properties"/>
+	<element   name="includes"		implicit="true"/>
+
+	<sequential>
+	    <fail message="Error: Must resolve &quot;ivy.xml&quot; file before using jar macro">
+		<condition>
+		    <not>
+			<isset property="ivy.resolved.file"/>
+		    </not>
+		</condition>
+	    </fail>
+
+	    <mkdir dir="@{pom.xml.dir}"/>
+	    <mkdir dir="@{pom.properties.dir}"/>
+
+	    <property environment="env"/>
+
+	    <property name="env.BUILD_NUMBER"	value="dev build"/>
+	    <property name="env.JOB_NAME"	value="dev build"/>
+	    <property name="env.SVN_REVISION"	value="dev build"/>
+
+	    <ivy:makepom ivyfile="${ivy.resolved.file}"
+		pomfile="@{pom.xml.dir}/@{pom.xml}"/>
+
+	    <echo file="@{pom.properties.dir}/@{pom.properties}">
+# Generated by Ivy
+# ${build.date}
+version=${ivy.revision}
+groupId=${ivy.organisation}
+artifactId=${ivy.module}
+	    </echo>
+
+	    <if>
+		<length string="@{webxml}" when="greater" length="0"/>
+		<then>
+		    <war destfile="@{destfile}"
+			webxml="@{webxml}">
+			<manifest>
+			    <section name="Module-Information">
+				<attribute name="Group-Id"	value="${ivy.organisation}"/>
+				<attribute name="Artifact-Id"	value="${ivy.module}"/>
+				<attribute name="Version"	value="${ivy.revision}"/>
+			    </section>
+			    <section name="Build-Information">
+				<attribute name="Project-Name"	value="${env.JOB_NAME}"/>
+				<attribute name="Build-Number"	value="${env.BUILD_NUMBER}"/>
+				<attribute name="SVN-Revision"	value="${env.SVN_REVISION}"/>
+				<attribute name="Build-Date"	value="${build.date}"/>
+			    </section>
+			</manifest>
+			<zipfileset dir="@{pom.properties.dir}"
+			    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+			    <include name="@{pom.properties}"/>
+			</zipfileset>
+			<zipfileset dir="@{pom.xml.dir}"
+			    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+			    <include name="@{pom.xml}"/>
+			</zipfileset>
+			<includes/>
+		    </war>
+		</then>
+		<else>
+		    <war destfile="@{destfile}"
+			needsxmlfile="false">
+			<manifest>
+			    <section name="Module-Information">
+				<attribute name="Group-Id"	value="${ivy.organisation}"/>
+				<attribute name="Artifact-Id"	value="${ivy.module}"/>
+				<attribute name="Version"	value="${ivy.revision}"/>
+			    </section>
+			    <section name="Build-Information">
+				<attribute name="Project-Name"	value="${env.JOB_NAME}"/>
+				<attribute name="Build-Number"	value="${env.BUILD_NUMBER}"/>
+				<attribute name="SVN-Revision"	value="${env.SVN_REVISION}"/>
+				<attribute name="Build-Date"	value="${build.date}"/>
+			    </section>
+			</manifest>
+			<zipfileset dir="@{pom.properties.dir}"
+			    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+			    <include name="@{pom.properties}"/>
+			</zipfileset>
+			<zipfileset dir="@{pom.xml.dir}"
+			    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+			    <include name="@{pom.xml}"/>
+			</zipfileset>
+			<includes/>
+		    </war>
+		</else>
+	    </if>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="ear.macro">
+	<attribute name="destfile"/>
+	<attribute name="appxml"/>
+	<attribute name="pom.properties.dir"	default="${basedir}/target"/>
+	<attribute name="pom.xml.dir"		default="${basedir}/target/archive"/>
+	<attribute name="pom.xml"		default="pom.xml"/>
+	<attribute name="pom.properties"	default="pom.properties"/>
+	<element   name="includes"		implicit="true"/>
+
+	<sequential>
+	    <fail message="Error: Must resolve &quot;ivy.xml&quot; file before using jar macro">
+		<condition>
+		    <not>
+			<isset property="ivy.resolved.file"/>
+		    </not>
+		</condition>
+	    </fail>
+
+	    <mkdir dir="@{pom.xml.dir}"/>
+	    <mkdir dir="@{pom.properties.dir}"/>
+
+	    <property environment="env"/>
+
+	    <property name="env.BUILD_NUMBER"	value="dev build"/>
+	    <property name="env.JOB_NAME"	value="dev build"/>
+	    <property name="env.SVN_REVISION"	value="dev build"/>
+
+	    <ivy:makepom ivyfile="${ivy.resolved.file}"
+		pomfile="@{pom.xml.dir}/@{pom.xml}"/>
+
+	    <echo file="@{pom.properties.dir}/@{pom.properties}">
+# Generated by Ivy
+# ${build.date}
+version=${ivy.revision}
+groupId=${ivy.organisation}
+artifactId=${ivy.module}
+	    </echo>
+
+	    <ear destfile="@{destfile}"
+		webxml="@{webxml}">
+		<manifest>
+		    <section name="Module-Information">
+			<attribute name="Group-Id"	value="${ivy.organisation}"/>
+			<attribute name="Artifact-Id"	value="${ivy.module}"/>
+			<attribute name="Version"	value="${ivy.revision}"/>
+		    </section>
+		    <section name="Build-Information">
+			<attribute name="Project-Name"	value="${env.JOB_NAME}"/>
+			<attribute name="Build-Number"	value="${env.BUILD_NUMBER}"/>
+			<attribute name="SVN-Revision"	value="${env.SVN_REVISION}"/>
+			<attribute name="Build-Date"	value="${build.date}"/>
+		    </section>
+		</manifest>
+		<zipfileset dir="@{pom.properties.dir}"
+		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+		    <include name="@{pom.properties}"/>
+		</zipfileset>
+		<zipfileset dir="@{pom.xml.dir}"
+		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
+		    <include name="@{pom.xml}"/>
+		</zipfileset>
+		<includes/>
+	    </ear>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="zip.macro">
+	<attribute name="destfile"/>
+	<attribute name="work.dir"		default="${basedir}/target"/>
+	<attribute name="version.file"		default="version.txt"/>
+	<element   name="includes"		implicit="true"/>
+
+	<sequential>
+	    <fail message="Error: Must resolve &quot;ivy.xml&quot; file before using jar macro">
+		<condition>
+		    <not>
+			<isset property="ivy.resolved.file"/>
+		    </not>
+		</condition>
+	    </fail>
+
+	    <mkdir dir="@{work.dir}"/>
+
+	    <property environment="env"/>
+
+	    <property name="env.BUILD_NUMBER"	value="dev build"/>
+	    <property name="env.JOB_NAME"	value="dev build"/>
+	    <property name="env.SVN_REVISION"	value="dev build"/>
+
+	    <echo file="@{work.dir}/@{version.file}">
+Module-Information:
+
+Group-Id: ${ivy.organisation}
+Artifact-Id: ${ivy.module}
+Version: ${ivy.revision}
+
+Build-Information:
+
+Project-Name: ${env.JOB_NAME}
+Build-Number: ${env.BUILD_NUMBER}
+SVN-Revision: ${env.SVN_REVISION}
+Build-Date:   ${build.date}
+	    </echo>
+
+	    <zip destfile="@{destfile}">
+		<fileset dir="@{work.dir}">
+		    <include name="@{version.file}"/>
+		</fileset>
+		<includes/>
+	    </zip>
+	</sequential>
+    </macrodef>
+</project>

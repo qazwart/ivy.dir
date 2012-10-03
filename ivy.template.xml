@@ -1,0 +1,91 @@
+<ivy-module version="1.0">
+
+
+    <!-- HOW TO USE THIS FILE -->
+
+    <!-- 1. In the <info> section, set your module name and revision -->
+    <!-- 2. The configurations listed in the <dependencies> section  -->
+    <!--    are the standard ones that map to Maven dependencies. If -->
+    <!--    you have a dependency that doesn't match any of these,   -->
+    <!--    then feel free to define your own. However, set the      -->
+    <!--    visibility to "private" to prevent them from appearing   -->
+    <!--    in the pom.xml that we generate.                         -->
+    <!-- 3. The "conf" parameter is mapping the Ivy dependency to    -->
+    <!--    Maven dependency. Use "default", or as the Maven depend- -->
+    <!--    ency or you'll also include javadocs and source.         -->
+    <!-- 4. You can map a dependency to multiple configurations.     -->
+    <!--    However, you need to separate them with a semicolon (;)  -->
+    <!--    and not a comma (,):                                     -->
+    <!--    Incorrect: conf="compile->default,test->default"         -->
+    <!--    Correct:   conf="compile->default;test->default"         -->
+
+    <info
+	organisation="com.travelclick"
+	module="some-module"
+	revision="version"
+	status="release"/>
+
+    <!-- These "configurations" will map to the correct Maven scopes -->
+    <!-- when the pom.xml file is generated. It is advisable to use  -->
+    <!-- these in your program. However, you can define your own     -->
+    <!-- configurations if none of these work for you. For example,  -->
+    <!-- you have a jar that contains a process you use as part of   -->
+    <!-- the build process, or a jar that contains ant tasks. Just   -->
+    <!-- be sure to define the "visibility" of your defined confs    -->
+    <!-- to "private", so the pom.xml doesn't pick them up.          -->
+
+    <configurations>
+	<conf name="default" visibility="public"
+	    description="Runtime dependencies and master artifact can be used with this conf."
+	    extends="runtime,master"/>
+
+	<conf name="master" visibility="public"
+	    description="Contains only artifact published by this module itself, with no transitive dependencies."/>
+
+	<conf name="compile" visibility="public"
+	    description="The default scope. Used if none specified. Compile deps. are available in all classpaths"/>
+
+	<conf name="provided" visibility="public"
+	    description="Like compile, but indicates you expect the environment to provide it. Required for compilation, and isn't transitive."/>
+
+	<conf name="runtime" visibility="public"
+	    description="Not required for compilation, but is required for execution."
+	    extends="compile"/>
+
+	<conf name="test" visibility="private"
+	    description="Not required for normal use, but is available for test compilation and execution"
+	    extends="runtime"/>
+
+	<conf name="system" visibility="public"
+	    description="Like 'provided'. However, it isn't even looked up in the repository."/>
+
+	<conf name="sources" visibility="public"
+	    description="This configuration contains the source artifacts."/>
+
+	<conf name="javadoc" visibility="public"
+	    description="This configuration contains the published javadocs"/>
+
+	<conf name="optional" visibility="public"
+	    description="Contains all optional dependencies"/>
+
+    </configurations>
+
+    <dependencies>
+
+	<!-- Examples: 
+
+	<dependency org="commons-logging" name="commons-logging"
+	    rev="1.1.1" conf="compile->default"/>
+
+	<dependency org="com.travelclick" name="common-all"
+	    rev="4.1" conf="compile->default"/>
+
+	<dependency org="com.travelclick" name="common-all"
+	    rev="4.1" type="javadoc ext="jar" conf="javadoc->default"/>
+
+	<dependency org="junit" name="junit"
+	    rev="4.10" conf="test->default"/> 
+
+	-->
+    </dependencies>
+</ivy-module>

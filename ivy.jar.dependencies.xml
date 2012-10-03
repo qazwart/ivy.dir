@@ -1,0 +1,539 @@
+<ivy-module version="1.0">
+
+    <!-- LIST OF JARS IN TC-Dependencies AND THEIR VERSIONS -->
+
+    <dependencies>
+
+	<!-- ======================================================= -->
+	<!--                 TRAVELCLICK                             -->
+	<!-- ======================================================= -->
+
+	<dependency org="com.travelclick"		name="TC-Common-All"
+	    rev="4.4"		conf="compile->default"/>
+
+	<dependecy org="com.travelclick" 		name="crypto"
+	    rev="4.4" 		conf="compile->default"/>
+
+	<dependecy org="com.travelclick" 		name="TC-DataAccessCache"
+	    rev="4.4" 		conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                   APACHE                                -->
+	<!-- ======================================================= -->
+
+	<!-- axiom.jar: Consists of both of these jars -->
+	<!-- axiom-api-1.2.8.jar Consists of just the second one -->
+	<dependency org="org.apache.ws.commons.axiom" 	name="axiom-c14n" 
+	    rev="1.2.8" 	conf="compile->default"/>
+	<dependency org="org.apache.ws.commons.axiom" 	name="axiom-api" 
+	    rev="1.2.8" 	conf="compile->default"/>
+
+	<!-- axiom-dom-1.2.8.jar -->
+	<dependency org="org.apache.ws.commons.axiom" 	name="axiom-dom" 
+	    rev="1.2.8" 	conf="compile->default"/>
+
+	<!-- axiom-impl-1.2.8.jar -->
+	<dependency org="org.apache.ws.commons.axiom" 	name="axiom-impl" 
+	    rev="1.2.8" 	conf="compile->default"/>
+
+	<!-- axis-1.4.jar -->
+	<dependency org="org.apache.axis" 		name="axis" 
+	    rev="1.4" 		conf="compile->default"/>
+
+	<!-- axis2-adb-1.5.jar -->
+	<dependency org="org.apache.axis2" 		name="axis2-adb" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- axis2-kernel-1.5.jar -->
+	<dependency org="org.apache.axis2" 		name="axis2-kernel" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- axis2-spring-1.5.jar -->
+	<dependency org="org.apache.axis2" 		name="axis2-spring" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- axis2-transport-http-1.5.jar -->
+	<dependency org="org.apache.axis2" 		name="axis2-transport-http" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- axis2-transport-local-1.5.jar -->
+	<dependency org="org.apache.axis2" 		name="axis2-transport-local" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- bcel.jar -->
+	<dependency org="bcel" 				name="bcel" 
+	    rev="5.1" 		conf="compile->default"/>
+
+	<!-- commons-beanutils.jar -->
+	<dependency org="commons-beanutils" 		name="commons-beanutils" 
+	    rev="1.7.0" 	conf="compile->default"/>
+
+	<!-- commons-cli-1.2.jar -->
+	<dependency org="commons-cli" 			name="commons-cli" 
+	    rev="1.2" 		conf="compile->default"/>
+
+	<!-- commons-codec-1.3.jar -->
+	<dependency org="commons-codec" 		name="commons-codec" 
+	    rev="1.3" 		conf="compile->default"/>
+
+	<!--commons-collections.jar -->
+	<dependency org="commons-collections" 		name="commons-collections" 
+	    rev="3.1" 		conf="compile->default"/>
+
+	<!--commons-daemon-1.0.3.jar -->
+	<dependency org="commons-daemon" 		name="commons-daemon" 
+	    rev="1.0.3" 	conf="compile->default"/>
+
+	<!-- commons-dbcp-1.2.1.jar -->
+	<dependency org="commons-dbcp" 			name="commons-dbcp" 
+	    rev="1.2.1" 	conf="compile->default"/>
+
+	<!-- commons-digester-1.8.jar -->
+	<dependency org="commons-digester" 		name="commons-digester" 
+	    rev="1.8" 		conf="compile->default"/>
+
+	<!-- commons-discovery-0.4.jar -->
+	<dependency org="commons-discovery" 		name="commons-discovery" 
+	    rev="0.4" 		conf="compile->default"/>
+
+	<!-- commons-fileupload-1.2.2.jar -->
+	<dependency org="common-fileupload" 		name="commons-fileupload" 
+	    rev="1.2.2" 	conf="compile->default"/>
+
+	<!-- commons-httpclient-3.1 -->
+	<dependency org="commons-httpclient" 		name="commons-httpclient" 
+	    rev="3.1" 		conf="compile->default"/>
+
+	<!-- commons-io-1.4.jar -->
+	<dependency org="commons-io" 			name="commons-io" 
+	    rev="1.4" 		conf="compile->default"/>
+
+	<!-- commons-lang-2.2.jar -->
+	<dependency org="commons-lang" 			name="commons-lang" 
+	    rev="2.2" 		conf="compile->default"/>
+
+	<!-- commons-lang-2.6.jar -->
+	<dependency org="commons-lang" 			name="commons-lang" 
+	    rev="2.6" 		conf="compile->default"/>
+
+	<!-- commons-logging.jar -->
+	<!-- Not a checksum match: Match determined by MANIFEST.INF -->
+	<!-- and Beyond Compare class match  -->
+	<dependency org="apache-logging" 		name="commons-logging" 
+	    rev="1.1.0.jboss" 	conf="compile->default"/>
+
+	<!-- commons-net-1.4.1.jar -->
+	<dependency org="commons-net" 			name="commons-net" 
+	    rev="1.4.1" 	conf="compile->default"/>
+
+	<!--commons-pool-1.4.jar -->
+	<dependency org="commons-pool" 			name="commons-pool" 
+	    rev="1.4" 		conf="compile->default"/>
+
+	<!-- httpclient-4.0.1.jar -->
+	<!-- Not a checksum match: All classes and META data match. Mismatch in pom.xml date -->
+	<dependency org="org.apache.httpcomponents" 	name="httpclient" 
+	    rev="4.0.1" 	conf="compile->default"/>
+
+	<!-- httpcore-4.0.1 -->
+	<!-- Not a checksum match: All classes and META data match exactly -->
+	<dependency org="org.apache.httpcomponents" 	name="httpcore" 
+	    rev="4.0.1" 	conf="compile->default"/>
+
+	<!-- httpcore-nio-4.0.1.jar -->
+	<!-- Not a checksum match: All classes and META data match exactly -->
+	<dependency org="org.apache.httpcomponents" 	name="httpcore-nio" 
+	    rev="4.0.1" 	conf="compile->default"/>
+
+	<!-- log4j-1.2.15 -->
+	<dependency org="log4j" 			name="log4j" 
+	    rev="1.2.15" 	conf="compile->default"/>
+
+	<!-- log4j-1.2.17 -->
+	<!-- Not a checksum match: All classes match: MANIFEST bnd-lastupdated is different -->
+	<dependency org="log4j" 			name="log4j" 
+	    rev="1.2.17" 	conf="compile->default"/>
+
+	<!-- lucene-core-3.5.0.jar -->
+	<dependency org="org.apache.lucene" 		name="lucene-core" 
+	    rev="3.5.0" 	conf="compile->default"/>
+
+	<!-- poi-2.5.1-final-20040804.jar -->
+	<dependency org="poi" 				name="poi" 
+	    rev="2.5.1" 	conf="compile->default"/>
+
+	<!-- poi-contrib-2.5.1-final-20040804.jar -->
+	<dependency org="poi" 				name="poi-contrib" 
+	    rev="2.5.1-final-20040804" 	conf="compile->default"/>
+
+	<!-- poi-scratchpad-2.5.1-final-20040804.jar -->
+	<dependency org="poi" 				name="poi-scratchpad" 
+	    rev="2.5.1-final-20040804" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                      COHERENCE                          -->
+	<!-- ======================================================= -->
+
+	<!-- coherence.jar -->
+	<!-- Oracle product. Could not find exact match at Oracle. -->
+	<!-- believe this to be version 3.7.0, and Deployed jar in -->
+	<!-- TC-Dependencies project to Artifactory.               -->
+	<dependency org="com.oracle" 			name="oracle-coherence" 
+	    rev="3.7.0" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                      FIORANO                            -->
+	<!-- ======================================================= -->
+
+	<!-- These jars were downloaded from the TC-Dependency project -->
+	<!-- We may need to modify their pom.xml file to show depend-  -->
+	<!-- ency fmq-client has a dependency on the framework. No     -->
+	<!-- need to specify both in your ivy.xml file.                -->
+	<dependency org="com.fiorano" 			name="fmq-client" 
+	    rev="9.3.0" 	conf="compile->default"/>
+	<dependency org="com.fiorano" 			name="fiorano-framework" 
+	    rev="9.3.0" 	conf="compile->default"/>
+
+
+	<!-- ======================================================= -->
+	<!--                    GOLDENGATE                           -->
+	<!-- ======================================================= -->
+
+	<!-- Downloaded directoy from TC-Dependencies. However, these-->
+	<!-- jars came with internal pom.xml files.                  -->
+
+	<dependency org="com.goldengate.atg" 		name="ggcmdui" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="ggdbutil" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="ggjms" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="ggtestutils" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="ggtrail" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="gguserexit" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="gguserexitadp" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="gguserexitapi" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+	<dependency org="com.goldengate.atg" 		name="ggutil" 
+	    rev="3.1.0.4" 	conf="compile->default"/>
+
+
+	<!-- ======================================================= -->
+	<!--                        HORNET                           -->
+	<!-- ======================================================= -->
+
+	<!-- hornetq-bootstrap.jar -->
+	<dependency org="org.hornetq" 			name="hornetq-bootstrap" 
+	    rev="2.0.0.CR2" 	conf="compile->default"/>
+
+	<!-- hornetq-core-jar -->
+	<dependency org="org.hornetq" 			name="hornetq-core" 
+	    rev="2.0.0.GA" 	conf="compile->default"/>
+
+	<!-- hornetq-jboss-as-integration.jar -->
+	<dependency org="org.hornetq" 			name="hornetq-jboss-as-integration" 
+	    rev="2.0.0.CR2" 	conf="compile->default"/>
+
+	<!-- hornetq-jms.jar -->
+	<dependency org="org.hornetq" 			name="hornetq-jms" 
+	    rev="2.0.0.GA" 	conf="compile->default"/>
+
+	<!-- hornetq-logging.jar -->
+	<dependency org="org.hornetq" 			name="hornetq-logging" 
+	    rev="2.0.0.CR2" 	conf="compile->default"/>
+
+	<!-- hornetq-ra.rar -->
+	<dependency org="org.hornetq" 			name="hornetq-ra" 
+	    rev="2.0.0.CR2" 	conf="compile->default"/>
+
+	<!-- hornetq-server.sar -->
+	<dependency org="org.hornetq" 			name="hornetq-service-sar" 
+	    rev="2.2.0.CR" 	conf="compile->default">
+	    <artifact 					name="hornetq-service-sar" ext="sar"/>
+	</dependency>
+
+	<!--hornetq-transports.jar -->
+	<dependency org="org.hornetq" 			name="hornetq-transports" 
+	    rev="2.0.0.GA" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                        JAVA                             -->
+	<!-- ======================================================= -->
+
+	<!-- activation.jar -->
+	<!-- Not a checksum match. Some classes decomplied differently, but were equivelent -->
+	<!-- One jar used "string" + "string". Other used stringAppender method -->
+	<dependency org="javax.activation" 		name="activation" 
+	    rev="1.1.1" 	conf="compile->default"/>
+
+	<!--jaxrpc.jar -->
+	<dependency org="org.apache.axis" 		name="axis-jaxpc" 
+	    rev="1.4" 		conf="compile->default"/>
+
+	<!--jms.jar -->
+	<dependency org="org.glassfish.mq" 		name="jms" 
+	    rev="4.5.2" 	conf="compile->default"/>
+
+	<!-- mail.jar -->
+	<!-- Couldn't find a match. Version 1.4.1 is fairly close, but not quite in either  -->
+	<!-- com.sun/main or javax/mail or org.glassfish/mail. Using the pom.xml which      -->
+	<!-- gives the dependencies from javax/mail                                         -->
+	<dependency org="javax.mail" 			name="mail" 
+	    rev="1.4.1.jboss" 	conf="compile->default"/>
+
+	<!-- servlet-api.jar -->
+	<!-- Close match found in version javax.servlet#servlet-api#2.4 -->
+	<!-- It has a few more resource files, but the classes match -->
+	<dependency org="javax.servlet" 		name="servlet-api" 
+	    rev="2.4.tc" 	conf="compile->default"/>
+
+	<!-- stax-api.jar -->
+	<!-- Not a checksum match. Difference is in MANIFEST.INF file -->
+	<dependency org="stax" 				name="stax-api" 
+	    rev="1.0" 		conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                        JBOSS                            -->
+	<!-- ======================================================= -->
+
+	<!-- jbossall-client.jar -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="org.jboss.client" 		name="jbossall-client" 
+	    rev="4.3.0.GA_CP04" conf="compile->default"/>
+
+	<!-- jboss-annotations-ejb3.jar -->
+	<dependency org="jboss" 			name="jboss-annotations-ejb3" 
+	    rev="4.2.0.GA" 	conf="compile->default"/>
+
+	<!-- jboss-aop-jdk50.jar -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="org.jboss.aop" 		name="jboss-aop" 
+	    rev="1.5.5.GA" 	conf="compile->default"/>
+
+	<!-- jboss-ejb3x.jar -->
+	<!-- Not found in repository. Downloaded one we had -->
+	<dependency org="jboss" 			name="jboss-ejb3x" 
+	    rev="4.2.0" 	conf="compile->default"/>
+
+	<!-- jboss-j2ee.jar -->
+	<dependency org="jboss" 			name="jboss-j2ee" 
+	    rev="4.2.0.GA" 	conf="compile->default"/>
+
+	<!-- jboss-jmx.jar -->
+	<dependency org="jboss" 			name="jboss-jmx" 
+	    rev="4.2.0.GA" 	conf="compile->default"/>
+
+	<!-- jboss-messaging.jar -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="jboss.messaging" 		name="jboss-messaging" 
+	    rev="1.4.0.SP3-CP08" conf="compile->default"/>
+
+	<!-- jboss-messaging-client -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="jboss.messaging" 		name="jboss-messaging" 
+	    rev="1.4.0.SP3-CP08" conf="compile->default"/>
+
+	<!-- jboss-remoting -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="org.jboss.remoting" 		name="jboss-remoting" 
+	    rev="2.2.3" 	conf="compile->default"/>
+
+	<!-- jboss-system.jar -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="jboss" 			name="jboss-system" 
+	    rev="4.3.0.GA_CP04" conf="compile->default"/>
+
+	<!-- jnpserver.jar -->
+	<!-- version not in public Maven repository. Downloaded TC version -->
+	<dependency org="org.jboss" 			name="jnpserver" 
+	    rev="4.3.0.GA_CP04" conf="compile->default"/>
+
+	<!-- jakarta-oro-2.0.8.jar -->
+	<dependency org="oro" 				name="oro" 
+	    rev="2.0.8" 	conf="compile->default"/>
+
+	<!-- jsp-api.jar -->
+	<dependency org="org.apache.tomcat" 		name="jsp-api" 
+	    rev="6.0.20" 	conf="compile->default"/>
+
+	<!--mockejb.jar -->
+	<dependency org="org.mockejb" 			name="mockejb" 
+	    rev="0.6-beta2" 	conf="compile->default"/>
+
+	<!-- mockrunner.jar -->
+	<dependency org="com.mockrunner" 		name="mockrunner-j2ee5-jdk1.6" 
+	    rev="0.4.2" 	conf="compile->default"/>
+
+	<!-- mockrunner-jca.jar -->
+	<dependency org="mockrunner" 			name="mockrunner-jca-j2ee5-jdk1.6" 
+	    rev="0.4.2" 	conf="compile->default"/>
+
+	<!-- mockrunner-jca.jar -->
+	<dependency org="com.mockrunner" 		name="mockrunner-jdbc-j2ee5-jdk1.6" 
+	    rev="0.4.2" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                       ORACLE                            -->
+	<!-- ======================================================= -->
+
+	<dependency org="com.oracle" 			name="ojdbc14" 
+	    rev="10.2.0.3.0" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                       OTHERS                            -->
+	<!-- ======================================================= -->
+
+	<!-- antlr-2.7.7.jar -->
+	<dependency org="antlr" 			name="antlr" 
+	    rev="2.7.7" 	conf="compile->default"/>
+
+	<!-- asm-3.2.jar -->
+	<dependency org="asm" 				name="asm" 
+	    rev="3.2" 		conf="compile->default"/>
+
+	<!-- cglib-nodep-2.1_3.jar -->
+	<dependency org="cglib" 			name="cglib-nodep" 
+	    rev="2.1_3" 	conf="compile->default"/>
+
+	<!--ezmorph-1.0.jar -->
+	<dependency org="net.sf.ezmorph" 		name="ezmorph" 
+	    rev="1.0" 		conf="compile->default"/>
+
+	<!-- groovy-1.8.6.jar -->
+	<dependency org="org.codehaus.groovy" 		name="groovy" 
+	    rev="1.8.6" 	conf="compile->default"/>
+
+	<!-- javassist.jar -->
+	<dependency org="org.javassist" 		name="javassist" 
+	    rev="3.8.0.GA" 	conf="compile->default"/>
+
+	<!--jaxen.jar -->
+	<dependency org="jaxen" 			name="jaxen" 
+	    rev="1.1.1" 	conf="compile->default"/>
+
+	<!--jdom.jar -->
+	<dependency org="org.jopendocument" 		name="jdom" 
+	    rev="1.1.1" 	conf="compile->default"/>
+
+	<!--jibx-bind.jar -->
+	<dependency org="org.jibx" 			name="jibx-bind" 
+	    rev="1.2.3" 	conf="compile->default"/>
+
+	<!-- jibx-run.jar -->
+	<dependency org="org.jibx" 			name="jibx-run" 
+	    rev="1.2.3" 	conf="compile->default"/>
+
+	<!-- joda-time.-1.6.jar -->
+	<dependency org="joda-time" 			name="joda-time" 
+	    rev="1.6" 		conf="compile->default"/>
+
+	<!-- json-lib-2.3-jdk15.jar -->
+	<dependency org="net.sf.json-lib" 		name="json-lib" 
+	    rev="2.3" 		conf="compile->default"/>
+
+	<!--jtidy.jar -->
+	<dependency org="net.sf.jtidy" 			name="jtidy" 
+	    rev="r938" 		conf="compile->default"/>
+
+	<!-- junit-4.5.jar -->
+	<dependency org="junit" 			name="junit" 
+	    rev="4.5" 		conf="compile->default"/>
+
+	<!-- quartz-1.5.2.jar -->
+	<dependency org="quartz" 			name="quartz" 
+	    rev="1.5.2" 	conf="compile->default"/>
+
+	<!-- saxpath.jar -->
+	<dependency org="org.jdom" 			name="saxpath" 
+	    rev="1.0-FCS" 	conf="compile->default"/>
+
+	<!-- swingx-0.9.4.jar -->
+	<dependency org="org.swinglabs" 		name="swingx" 
+	    rev="0.9.4" 	conf="compile->default"/>
+
+	<!-- trove.jar -->
+	<dependency org="trove" 			name="trove" 
+	    rev="1.0.2" 	conf="compile->default"/>
+
+	<!-- vtd-xml.jar -->
+	<dependency org="ximpleware" 			name="vtd-xml" 
+	    rev="2.5" 		conf="compile->default"/>
+
+	<!-- xalan.jar -->
+	<dependency org="xalan" 			name="xalan" 
+	    rev="2.5.D1" 	conf="compile->default"/>
+
+	<!-- xml-apis.jar -->
+	<dependency org="xerces" 			name="xmlParserAPIs" 
+	    rev="2.6.1" 	conf="compile->default"/>
+
+	<!-- xerces.jar -->
+	<dependency org="xerces" 			name="xercesImpl" 
+	    rev="2.6.1" 	conf="compile->default"/>
+
+	<!-- xmlunit-1.3.jar -->
+	<dependency org="xmlunit" 			name="xmlunit" 
+	    rev="1.3" 		conf="compile->default"/>
+
+	<!-- xom-1.2.7.jar -->
+	<dependency org="xom" 				name="xom" 
+	    rev="1.2.7" 	conf="compile->default"/>
+
+	<!-- xpp3.jar -->
+	<dependency org="xxp3" 				name="xxp3" 
+	    rev="1.1.3.4.O" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                       REDLINE                           -->
+	<!-- ======================================================= -->
+
+
+	<!--redline-1.1.5.jar -->
+	<dependency org="org.freecompany.redline" 	name="redline" 
+	    rev="1.1.5" 	conf="compile->default"/>
+
+	<!-- ======================================================= -->
+	<!--                      SECURITY                           -->
+	<!-- ======================================================= -->
+
+	<!-- allatori.jar -->
+	<dependency org="com.allatori" 			name="allatori" 
+	    rev="2.8" 		conf="compile->default"/>
+
+	<!-- Blowfish.jar -->
+	<dependency org="com.travelclick" 		name="Blowfish" 
+	    rev="1.0" 		conf="compile->default"/>
+
+	<!-- BlowfishJ.jar -->
+	<dependency org="com.travelclick" 		name="BlowfishJ" 
+	    rev="1.0" 		conf="compile->default"/>
+
+	<!-- cfx -->
+	<dependency org="com.adobe" 			name="cfx" 
+	    rev="2007-JUL-11" 	conf="compile->default"/>
+
+	<!-- cybsclients15.jar -->
+	<dependency org="com.cybersource" 		name="cybsclients" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- cybssecurity.jar -->
+	<dependency org="com.cybersource" 		name="cybssecurity" 
+	    rev="1.5" 		conf="compile->default"/>
+
+	<!-- spring.jar -->
+	<dependency org="org.springframework" 		name="spring" 
+	    rev="2.0.4" 	conf="compile->default"/>
+
+	<!-- spring-aspects.jar -->
+	<dependency org="org.springframework" 		name="spring-apsects" 
+	    rev="2.0.4" 	conf="compile->default"/>
+
+	<!-- spring-mock.jar -->
+	<dependency org="org.springframework" 		name="spring-mock" 
+	    rev="2.0.4" 	conf="compile->default"/>
+    </dependencies>
+</ivy-module>
