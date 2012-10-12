@@ -20,6 +20,20 @@ It also includes the Ant Contrib tasks
 easier to do such things are loop through a set of files and includes
 if/then/else logic.
 
+This project makes integration into Jenkins so much easier to do, and
+the structure of this project works very closely with Jenkins. For
+example, the Ivy cache has been redefined to allow each Jenkins executor
+to have its own separate Ivy cache. This way, one build can clean the
+cache without affecting a parallel build.
+
+The newly defined macros for the Jars, Wars, and Ears automatically
+embed the Jenkins build information into the MANIFEST.MF file (as well
+as the Ivy version information. They also will produce a pom.xml file
+from the ivy.xml file, so you can use mvn deploy:deploy-file to deploy
+the built jars, wars, and ears bak into your Maven repository, and keep
+it in Maven format. These commands will also embed the pom.xml into the
+jars, wars, and ears under the META-INF directory just like Maven does.
+
 AUTHOR
 ======
 
@@ -103,6 +117,8 @@ These are new tasks created for the various build tools
 * findbugs
 * cpd
 * checkstyle
+* jacoco.coverage (Used to add coverage to JUnit tests)
+* jacoco.report (Used to create a coverage report)
 
 
 STANDARD TARGETS
