@@ -130,6 +130,7 @@ should be the standard ones used:
 * all         Jenkins Target. Cleans everything and runs everything
 * checkstyle  Check Source Code Styles
 * clean       Cleans all built artifacts and the Ivy Cache
+* generate-sources Generate any required Java sources
 * compile     Compiles the Java source code
 * cpd         Detects copy and pasting in code
 * findbugs    Run the findbugs report for Jenkins
@@ -138,6 +139,7 @@ should be the standard ones used:
 * package     Packaging of the artifact
 * pmd         Runs PMD Bug Detector Against Source
 * site        Produces a whole slew of reports
+* test-compile Compile the JUnit tests
 * test        Run the JUnit tests
 
 Default target: package
@@ -174,7 +176,7 @@ JENKINS EXPECTED OUTPUT
 =======================
 
 * target/findbugs.xml     - Findbugs Output
-* target/javadocs/        - Location of all Javadocs
+* target/apidocs/         - Location of all Javadocs
 * target/surfire-tests/   - All tests in XML format
 * target/pmd.xml          - PMD output
 * target/cpd.xml          - CPD output
@@ -212,6 +214,31 @@ build-sample.xml file will show you how to do this.
 
 There is a sample build.xml file at build-sample.xml that will help you
 layout the new format.
+
+PROPERTY NAMES
+==============
+
+Property names will be all lower case and each part will be separated by
+periods. For example, main.test.dir and not mainTestDir. If a property
+is involved with a particular task, the first part of the name should be
+the name of the task, and the part after the dot is the parameter for
+that task. For example, ivy.log sets the value of the "log" field for
+the various Ivy tasks. ivy.cleancache will be used to see whether or not
+to run the <ivy:cleancache> task. jar.destfile will be the name of the
+jar's destination file. javac.verbose will be the  setting for the
+verbose parameter for the <javac> task.
+
+The exception will be for main and test properties. For example, we
+should call the destdir for the <javac> task javac.destdir. However,
+that will cause problems since the test classes and main classes should
+be in two separate directories. Therefore, we will use "main" or "test"
+as the first part of the property  name instead of "javac".
+
+DON'T USE	MAIN		TEST
+==============  ==============  ================
+javac.srcdir	main.srcdir	test.srcdir
+javac.destdir	main.destdir	test.destdir
+javac.classpath main.classpath  test.classpath
 
 FILES
 =====
