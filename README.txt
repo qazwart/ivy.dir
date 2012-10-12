@@ -20,6 +20,29 @@ It also includes the Ant Contrib tasks
 easier to do such things are loop through a set of files and includes
 if/then/else logic.
 
+AUTHOR
+======
+
+David Weintraub <mailto:david@weintraub.name>
+
+COPYRIGHT
+=========
+
+Copyright (c) 2010 by David Weintraub. All rights reserved. This program
+is covered by the open source BMAB license.
+
+The BMAB (Buy me a beer) license allows you to use all code for whatever
+reason you want with these three caveats:
+
+1.  If you make any modifications in the code, please consider sending
+    them to me, so I can put them into my code.
+
+2.  Give me attribution and credit on this program.
+
+3.  If you're in town, buy me a beer. Or, a cup of coffee which is what
+    I'd prefer. Or, if you're feeling really spendthrify, you can buy me
+    lunch. I promise to eat with my mouth closed and to use a napkin
+    instead of my sleeves.
 
 IMPLEMENTATION
 ==============

@@ -1,6 +1,4 @@
 <ivy-module version="1.0">
-
-
     <!-- HOW TO USE THIS FILE -->
 
     <!-- 1. In the <info> section, set your module name and revision -->
@@ -19,10 +17,12 @@
     <!--    Incorrect: conf="compile->default,test->default"         -->
     <!--    Correct:   conf="compile->default;test->default"         -->
 
+    <!-- You can use the properties in the ivy.version.properties here -->
+    <!-- The generated pom.xml will have the correct version number  -->
     <info
-	organisation="com.travelclick"
+	organisation="com.vegibank"
 	module="some-module"
-	revision="version"
+	revision="${ivy.module.version}"
 	status="release"/>
 
     <!-- These "configurations" will map to the correct Maven scopes -->
@@ -71,21 +71,22 @@
     </configurations>
 
     <dependencies>
+	<!-- Examples -->
+	<!-- Jar for compilation -->
+	<dependency org="commons-logging"	name="commons-logging"
+	    rev="1.1.1"		conf="compile->default"/>
 
-	<!-- Examples: 
+	<!-- Using Property from ivy.version.properties file -->
+	<!-- The generated pom will have the correct version in it -->
+	<dependency org="com.vegibank"		name="foundation"
+	    rev="${ivy.foundation.version}" 	conf="compile->default"/>
 
-	<dependency org="commons-logging" name="commons-logging"
-	    rev="1.1.1" conf="compile->default"/>
+	<!-- Pulling out the JavaDoc information -->
+	<dependency org="commons-logging"	name="commons-logging"
+	    rev="1.1.1" type="javadoc" ext="jar" conf="javadoc->default"/>
 
-	<dependency org="com.travelclick" name="common-all"
-	    rev="4.1" conf="compile->default"/>
-
-	<dependency org="com.travelclick" name="common-all"
-	    rev="4.1" type="javadoc ext="jar" conf="javadoc->default"/>
-
-	<dependency org="junit" name="junit"
-	    rev="4.10" conf="test->default"/> 
-
-	-->
+	<!-- For testing only -->
+	<dependency org="junit"			name="junit"
+	    rev="4.10"		conf="test->default"/> 
     </dependencies>
 </ivy-module>

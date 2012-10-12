@@ -8,6 +8,9 @@
 	    pattern="dd-MMMM-yyyy hh:mm:ss aa zzzz"/>
     </tstamp>
 
+    <!-- Use this for universal version numbers -->
+    <property file="${ivy.dir}/ivy.version.properties"/>
+
     <!-- Add Ivy Tasks -->
     <taskdef uri="http://ant.apache.org/ivy"
 	resource="org/apache/ivy/ant/antlib.xml">
