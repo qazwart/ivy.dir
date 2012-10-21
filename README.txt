@@ -20,6 +20,11 @@ It also includes the Ant Contrib tasks
 easier to do such things are loop through a set of files and includes
 if/then/else logic.
 
+This project was setup for Subversion. The idea is to create a Subversion
+project (like trunk/ivy.dir), then have other projects use svn:externals to
+include the ivy.dir project into their project. You can do something similar
+with Perforce when creating a view. And Git sub-tree merges.
+
 This project makes integration into Jenkins so much easier to do, and
 the structure of this project works very closely with Jenkins. For
 example, the Ivy cache has been redefined to allow each Jenkins executor
@@ -60,6 +65,15 @@ reason you want with these three caveats:
 
 IMPLEMENTATION
 ==============
+
+* Get this sub-project into your code. Define this package as a project
+  inside your repository. Then use your repository's method of including
+  subprojects into your checkout.
+  * With Subversion, use the svn:externals property
+  * With Git use the sub-tree merge 
+    (https://help.github.com/articles/working-with-subtree-merge)
+    or Git Submodules (http://git-scm.com/book/en/Git-Tools-Submodules).
+  * With Perforce, define the Ivy.dir project as a sub-project of your view.
 
 * Add in the following two lines at the beginning of your build.xml file:
 
