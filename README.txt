@@ -185,6 +185,25 @@ Jenkins CI system.
 
 * target/archive - All files here will be archived into the build
 
+* target/maven - This is a rather interesting directory. When you
+  create a jar, you should place it in a subdirectory in this directory.
+  When that jar is created, two pom files: pom.xml and pom-snaphost.xml
+  are also created in that directory. These poms are identical except
+  that the revision of the pom-snapshot.xml will have "-SNAPSHOT" appended
+  to it.
+
+  The purpose of this is to allow you to use mvn deploy:deploy-file to
+  deploy the jar to either your snapshot repository or to your release
+  repository. All you have to do is specify the correct parameters and
+  choose the correct pom.
+
+  HOW I USE IT: I have Jenkins do a build on each change, and after each
+  build I use "mvn deploy:deploy-file" to deploy the jar into our snapshot
+  directory. When approved, I will also deploy that jar into our release
+  repository. This means that Build #20 is our release, but the last build
+  might be Build #25 which contains features you need. In that case, you can
+  specify the SNAPSHOT version which would be Build #25.
+
 
 JENKINS EXPECTED OUTPUT
 =======================
