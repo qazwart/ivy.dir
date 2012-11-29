@@ -11,6 +11,12 @@
     <!-- Ivy versions of all the basic jars -->
     <property file="${ivy.dir}/ivy.version.properties"/>
 
+    <property environment="env"/>
+
+    <property name="env.BUILD_NUMBER"	value="dev build"/>
+    <property name="env.JOB_NAME"	value="dev build"/>
+    <property name="env.SVN_REVISION"	value="dev build"/>
+
     <!-- Add Ivy Tasks -->
     <taskdef uri="http://ant.apache.org/ivy"
 	resource="org/apache/ivy/ant/antlib.xml">
@@ -20,7 +26,7 @@
 	    </fileset>
 	</classpath>
     </taskdef>
-    <ivy:settings file="${ivy.dir}/ivysettings.xml"/>
+    <ivy:configure file="${ivy.dir}/ivysettings.xml"/>
 
     <!-- Add Findbugs Task -->
     <property name="findbugs.home"
@@ -443,12 +449,6 @@
 	    <mkdir dir="${jar.macro.destfile.dir}"/>
 	    <mkdir dir="@{pom.properties.dir}"/>
 
-	    <property environment="env"/>
-
-	    <property name="env.BUILD_NUMBER"	value="dev build"/>
-	    <property name="env.JOB_NAME"	value="dev build"/>
-	    <property name="env.SVN_REVISION"	value="dev build"/>
-
 	    <ivy:makepom ivyfile="@{ivy.xml.file}"
 		artifactName="@{pom.artifact.name}"
 		artifactPackaging="@{pom.artifact.ext}"
@@ -515,12 +515,6 @@ artifactId=@{pom.artifact.name}
 
 	    <mkdir dir="@{pom.xml.dir}"/>
 	    <mkdir dir="@{pom.properties.dir}"/>
-
-	    <property environment="env"/>
-
-	    <property name="env.BUILD_NUMBER"	value="dev build"/>
-	    <property name="env.JOB_NAME"	value="dev build"/>
-	    <property name="env.SVN_REVISION"	value="dev build"/>
 
 	    <ivy:makepom ivyfile="${ivy.resolved.file}"
 		pomfile="@{pom.xml.dir}/@{pom.xml}"/>
@@ -614,12 +608,6 @@ artifactId=${ivy.module}
 	    <mkdir dir="@{pom.xml.dir}"/>
 	    <mkdir dir="@{pom.properties.dir}"/>
 
-	    <property environment="env"/>
-
-	    <property name="env.BUILD_NUMBER"	value="dev build"/>
-	    <property name="env.JOB_NAME"	value="dev build"/>
-	    <property name="env.SVN_REVISION"	value="dev build"/>
-
 	    <ivy:makepom ivyfile="${ivy.resolved.file}"
 		pomfile="@{pom.xml.dir}/@{pom.xml}"/>
 
@@ -676,12 +664,6 @@ artifactId=${ivy.module}
 
 	    <mkdir dir="@{work.dir}"/>
 
-	    <property environment="env"/>
-
-	    <property name="env.BUILD_NUMBER"	value="dev build"/>
-	    <property name="env.JOB_NAME"	value="dev build"/>
-	    <property name="env.SVN_REVISION"	value="dev build"/>
-
 	    <echo file="@{work.dir}/@{version.file}">
 Module-Information:
 
@@ -724,12 +706,6 @@ Build-Date:   ${build.date}
 	    </fail>
 
 	    <mkdir dir="@{work.dir}"/>
-
-	    <property environment="env"/>
-
-	    <property name="env.BUILD_NUMBER"	value="dev build"/>
-	    <property name="env.JOB_NAME"	value="dev build"/>
-	    <property name="env.SVN_REVISION"	value="dev build"/>
 
 	    <echo file="@{work.dir}/@{version.file}">
 Module-Information:

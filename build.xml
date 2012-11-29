@@ -2,185 +2,227 @@
     xmlns:ivy="http://ant.apache.org/ivy">
 
     <description>
-	This is a description of your project. This will
-	appear when you do a 'ant -p' command.
+	This is a template you can use for your build.xml file.
+	You need to change this description to be a description
+	of your project. This will appear when someone does an
+	"ant -p" or "ant -projecthelp".
+
+	You can delete comments with the (DELETE COMMENT) text
+	in them. These comments are here to help you, but they
+	tend to clog up the build.xml file with extranious info.
     </description>
 
-    <!-- Build Properties:
-	 All builds should work with a simple checkout and running
-	 "ant". It should do what a developer expects, so the
-	 default task should be "package". All properties should
-	 have defaults defined inside the build.xml and should
-	 workw without a build.properties file.
 
-	 The build properties file can be used to override
-	 the defaults in the build.xml file.
+    <!-- Build Properties File 
+	 The "build.properties" file allows developers to override
+	 certain properties. For example, we want Jenkins to do
+	 a <ivy:cleancache> with each build. However doing this
+	 will slow down the developer. Therefore, we create a 
+	 ivy.cleancache property and set it to "true". A developer
+	 can setup a build.properties file to set this property to
+	 "false" and thus override this property.
+
+	 Note that the "build.property" file should never be checked
+	 into your project. (DELETE COMMENT)
     -->
+    <property name="build.properties"		value="${basedir}/build.properties"/>
+    <property file="${build.properties}"/>
 
-    <property name="build.properties.file"
-	value="${basedir}/build.properties"/>
-    <property file="${build.properties.file}"/>
+    <!-- Import the Ivy Configuration
+	 This will import all of the necessary Ivy configuration,
+	 the other types of tasks we use, and some special macros
+	 that make using this project so much easier.
+     -->
 
-    <!-- Sets up the Travel Click Ivy Repository -->
-    <!-- This will also include other third      -->
-    <!-- party tasks like Findbugs, Checkstyle,  -->
-    <!-- etc.                                    -->
-
-    <property name="ivy.dir"		value="${basedir}/ivy.dir"/>
+    <property name="ivy.dir"			value="${basedir}/ivy.dir"/>
     <import file="${ivy.dir}/ivy.tasks.xml"/>
 
-    <!-- How noisy Ivy is when resolving -->
-    <property name="ivy.log"		value="quiet"/>
+    <!-- ========================================================== 
+		     Ivy Properties
+	 ==========================================================  -->
+
+
+    <!-- How noisy Ivy should be in resolving and retreiving
+	 Normally we want this to be quiet because this can
+	 generate a lot of noise. However, this can be set to
+	 "default" or "download" in your build.properties file
+	 for debugging purposes (DELETE COMMENT)
+    -->
+    
+    <property name="ivy.log"			value="quiet"/>
+
+    <!-- The build should fail if there's a problem with Ivy
+	 resolving the jar dependencies. However, when there
+	 are problems with Ivy resolving, you can use the
+	 ivy.report to see what the issue could be. Unfortunately,
+	 you can't generate that report if the build fails when
+	 <ivy:resolve> fails the build. You can set this
+	 property in your build.properties to generate the ivy.report
+	 when the resolve is failing. (DELETE COMMENT)
+    -->
+	 
     <property name="ivy.resolve.haltonfailure" value="true"/>
 
-    <!-- Whether to clean the Ivy Cache or not -->
-    <!-- Setting this to "false" via a         -->
-    <!-- build.property file can help speed up -->
-    <!-- development.                          -->
 
-    <property name="ivy.cleancache"	value="true"/>
+    <!-- Whether or not to clean your Ivy cache. This causes Ivy to
+	 redownload all of your jars. This is good for the Jenkins
+	 because the Ivy Cache can be out of date, but it's a pain
+	 when you do development. Set this to "false" in your
+	 build.properties file. (DELETE COMMENT)
+    -->
+    <property name="ivy.cleancache"		value="true"/>
 
-    <!-- How noisy do you want copies? -->
-    <property name="copy.verbose"	value="false"/>
+    <!-- How noisy do you want copies? (DELETE COMMENT) -->
+    <property name="copy.verbose"		value="false"/>
 
-    <!-- All artifacts that you create or modify should be done
-	 here. Don't polute your source with changes or files.
+    <!-- ========================================================== 
+		     STANDARD DIRECTORIES 
+	 ==========================================================  -->
+
+    <!-- Anything the build generates should be under the ${target.dir}.
+	 This makes it easy to clean everythign up, and prevents the
+	 accidental adding of a file that gets built and really isn't
+	 a source file. (DELETE COMMENT)
+    -->
+    <property name="target.dir"			value="${basedir}/target"/>
+
+
+    <!-- All Artifacts that are deployed to servers should be stored
+	 in the ${archive.dir}. This directory is automatically saved
+	 for each build for later deployments. (DELETE COMMENT)
+    -->
+    <property name="archive.dir"		value="${target.dir}/archive"/>
+
+    <!-- Jars to deploy to Maven should be stored in the ${maven.dir}
+	 with each jar (and its associated pom.xml files) under a 
+	 separate sub-directory. There's a deployment script that
+	 looks in this ${maven.dir} for deployable artifacts and
+	 will deploy them to Maven (DELETE COMMENT)
+    -->
+    <property name="maven.dir"			value="${target.dir}/maven"/>
+
+    <!-- Work directory: Use this to help you organize stuff (DELETE COMMENT) -->
+    <property name="work.dir"			value="${target.dir}/work"/>
+
+    <!-- Jar Directory: Put jars (or zips or wars) that don't get
+	 deployed anywhere under this directory for safe keeping (DELETE COMMENT)
+    -->
+    <property name="jar.dir"			value="${target.dir}/jars"/>
+
+    <!-- Library Directory: When you have to download jars for wars
+	 or ears, download them to this directory. Hint: Download them
+	 to subdirectories based upon the Ivy Configuration", so
+	 "runtime" jars are under "${lib.dir}/runtime, compile jars
+	 are under "${lib.dir}/compile" etc. (DELETE COMMENT)
+    -->
+    <property name="lib.dir"			value="${target.dir}/lib"/>
+
+
+    <!-- Default Main Source Directories -->
+    <!-- According to Maven Directory Defaults:
+
+	 main.webapp.dir:    Downloads to the root of a war
+         main.srcdir: 	     Java files to be compiled
+	 main.resources.dir: Downloads to the root of a jar
+	                     or to the "classes" directory of a war.
+			     This is where you stick non Java files you
+			     need copied into the jar or war in the same
+			     directory as the compiled classes.
+	 main.config.dir:    Not used by Maven jar or war.
+	 main.config.bin:    Shell scripts and other stuff you might need.
+	 (DELETE COMMENT)
     -->
 
-    <property name="target.dir"		value="${basedir}/target"/>
+    <property name="main.dir"			value="${basedir}/src/main"/>
+    <property name="main.webapp.dir"		value="${main.dir}webapp"/>
+    <property name="main.srcdir"		value="${main.dir}/java"/>
+    <property name="main.resources.dir" 	value="${main.dir}/resources"/>
+    <property name="main.config.dir"		value="${main.dir}/config"/>
+    <property name="main.bin.dir"		value="${main.dir}/bin"/>
+    <property name="main.destdir"		value="${target.dir}/classes"/>
 
-    <!-- All artifacts you require for deployment or publication
-	 should be stored here. Jenkins will automatically save
-	 all artifacts in this directory for each build.
+
+    <!-- Default Test Source Directories. These parallel the Main structure -->
+    <property name="test.dir"			value="${basedir}/src/test"/>
+    <property name="test.webapp.dir"		value="${test.dir}webapp"/>
+    <property name="test.srcdir"		value="${test.dir}/java"/>
+    <property name="test.resources.dir" 	value="${test.dir}/resources"/>
+    <property name="test.destdir"		value="${target.dir}/test-classes"/>
+
+
+    <!-- Generated Source:
+	 Generated Source files should be generated under the target directory
+	 so they don't get checked in accidentally. Under Maven standards, it
+	 should be under ${target.dir}/generated-sources. It is recommended that
+	 each generated source should be in a sub-directory under here, so that if
+	 you have multiple generated source types, each would be under its own
+	 sub-directory (DELETE COMMENT)
     -->
 
-    <property name="archive.dir"	value="${target.dir}/archive"/>
-
-    <property name="findbugs.output"	value="xml"/>
-    <property name="findbugs.outputfile"	
-	value="${target.dir}/findbugs.${findbugs.output}"/>
-
-    <!-- This build.xml will only create and fill this directory for wars -->
-    <property name="war.lib.dir"	value="${target.dir}/war.lib"/>
-
-    <!-- Default Non-Test Directories -->
-    <property name="main.dir"		value="${basedir}/src/main"/>
+    <property name="generated.srcdir"		value="${target.dir}/generated-sources"/>
+    <property name="wsdl.srcdir"		value="${generated.srcdir}/wsld"/>
 
 
-    <!-- Files here go into the root of the WAR -->
-    <property name="main.webapp.dir"	value="${basedir}/src/main/webapp"/>
-    <property name="main.srcdir"	value="${main.dir}/java"/>
+    <!-- Java Compile Properties -->
+    <property name="javac.lint"			value="true"/>
+    <property name="javac.deprecation"		value="true"/>
+    <property name="javac.source"		value="1.5"/>
+    <property name="javac.target"		value="1.6"/>
 
-    <!-- Files here don't go into wars or jars -->
-    <property name="main.config.dir"	value="${main.dir}/config"/>
+    <property name="javac.fork"			value="false"/> <!-- Don't fork unless necessary! -->
 
-    <!-- Files here go into the root of jars and under WEB-INF in wars -->
-    <property name="main.resources.dir" value="${main.dir}/resources"/>
+    <!-- Only used if "javac.fork" is true -->
+    <property name="javac.memoryInitialSize" 	value="64m"/>
+    <property name="javac.memoryMaximumSize" 	value="256m"/>
 
-    <!-- Files here go into the root of jars and WEB-INF/classes in wars -->
-    <property name="main.destdir"	value="${target.dir}/classes"/>
+    <!-- JUnit Properties -->
+    <property name="junit.fork"			value="true"/>
+    <property name="junit.includeantruntime" 	value="true"/>
+    <property name="junit.timeout"		value="2000"/>
+    <property name="junit.tempdir"		value="${target.dir}"/>
+    <property name="junit.maxmemory"		value="128m"/>
+    <property name="junit.batchtest.todir" 	value="${target.dir}/surefire-reports"/>
+    <property name="junit.formatter.type" 	value="xml"/>
 
-    <property name="jar.destfile"	value="${archive.dir}/${ant.project.name}.jar"/>
-    <property name="war.destfile"	value="${archive.dir}/${ant.project.name}.war"/>
-
-    <!-- These help control what targets get executed -->
-    <!-- Set these values to run the targets.         -->
-    <!-- The value isn't important. For example, if   -->
-    <!-- these properties had the value of 'false'    -->
-    <!-- target would still get built.                -->
-
-    <if>
-	<available file="${test.srcdir}" type="dir"/>
-	<then>
-	    <property name="run.junit.tests"	value="build-it"/>
-	</then>
-    </if>
-
-    <!--
-    <property name="build.jar"		value="build-it"/>
-    <property name="build.war"		value="build-it"/>
-    <property name="build.ear"		value="build-it"/>
-    -->
-
-    <!-- Test Directory Structure -->
-    <property name="test.dir"		value="${basedir}/src/test"/>
-    <property name="test.srcdir"	value="${test.dir}/java"/>
-    <property name="test.config.dir"	value="${test.dir}/config"/>
-    <property name="test.resources.dir"	value="${test.dir}/resources"/>
-    <property name="test.destdir"	value="${target.dir}/test/classes"/>
+    <!-- Findbugs Properties -->
+    <property name="findbugs.output"		value="xml"/>
+    <property name="findbugs.outputfile"	value="${target.dir}/findbugs.${findbugs.output}"/>
 
     <!-- Check Style Properties -->
-    <property name="checkstyle.config.file"
-	value="${checkstyle.home}/checkstyle_checks.xml"/>
-    <property name="checkstyle.formatter.type"
-	value="xml"/>
-    <property name="checkstyle.formatter.tofile"
-	value="${target.dir}/checkstyle.${checkstyle.formatter.type}"/>
+    <property name="checkstyle.formatter.type"	value="xml"/>
+    <property name="checkstyle.formatter.tofile" value="${target.dir}/checkstyle.${checkstyle.formatter.type}"/>
 
     <!-- PMD Properties -->
-
-    <!-- Valid types are xml, text, html csv, papari, summaryhtml -->
-    <property name="pmd.formatter.type" value="xml"/>
-
-    <property name="pmd.shortFileNames" value="true"/>
-    <property name="pmd.formatter.toFile"
-	value="${target.dir}/pmd.${pmd.formatter.type}"/>
+    <property name="pmd.formatter.type" 	value="xml"/>
+    <property name="pmd.formatter.toFile"	value="${target.dir}/pmd.${pmd.formatter.type}"/>
 
     <!-- CPD Properties -->
+    <property name="cpd.format"			value="xml"/> <!-- xml, cvs, text -->
 
-    <!-- Valid formats are xml, csv, and text (default text) -->
-    <property name="cpd.format"		value="xml"/>
+    <property name="cpd.outputFile"		value="${target.dir}/cpd.${cpd.format}"/>
+    <property name="cpd.minimumTokenCount" 	value="100"/>
+    <property name="cpd.ignoreLiterals" 	value="false"/>
+    <property name="cpd.ignoreIdentifiers" 	value="false"/>
 
-    <property name="cpd.outputFile"
-	value="${target.dir}/cpd.${cpd.format}"/>
-    <property name="cpd.minimumTokenCount"
-	value="100"/>
-    <property name="cpd.ignoreLiterals"
-	value="false"/>
-    <property name="cpd.ignoreIdentifiers"
-	value="false"/>
+    <!-- Javadoc Properties -->
+    <property name="javadoc.destdir"		value="${target.dir}/apidocs"/>
 
-    <!-- Valid languages are cpp, cs, java, php, ruby, --> 
-    <!-- and ecmascript (default java)                 -->
-    <property name="cpd.language"	value="java"/>
+    <!-- Jar and War Names -->
+    <!-- Set your jar and war names here, and then use the property
+	 as a target too. This way, everything is in one place.
 
-    <!-- Default Java Compiler Values
-	 This allows the developer to modify the compiler defaults if
-	 needed for debugging. This can be done via the
-	 ${build.properties.file}.
+	 Please note that the standard style of target names and ant properties
+	 is all lower case separated by periods. Not "JarName" or "jar-name",
+	 but just "jar.name". It's readable, and standardized (DELETE COMMENT)
     -->
+    <property name="my.jar"			value="${ant.project.name}.jar"/>
+    <property name="my.war"			value="${ant.project.anem}.war"/>
+    <property name="another.war"		value="another.war.name.war"/>
 
-    <!-- Don't fork unless you really can't build without forking -->
 
-    <property name="javac.fork"		value="false"/>
-    <property name="test.fork"		value="true"/>
-
-    <!-- If you fork, you can set these. However, if you need more
-	 than 256m for compilation, you have a problem
-    -->
-    <property name="javac.memoryInitialSize"
-	value="64m"/>
-    <property name="javac.memoryMaximumSize"
-	value="256m"/>
-
-    <!-- Don't change this! Use your Build Properties -->
-    <property name="javac.executable"	value="${java.home}/bin/java"/>
-
-    <!-- Lint Setting -->
-    <property name="javac.lint"		value="true"/>
-    <!-- Junit Properties -->
-    <property name="junit.batchtest.todir"
-	value="${target.dir}/surefire-reports"/>
-    <property name="junit.formatter.type"
-	value="xml"/>
-
-    <property name="junit.maxmemory"	value="256m"/>
-    <property name="junit.includeAntRuntime"
-	value="true"/>
-    <property name="junit.fork"		value="true"/>
-
-    <!-- One Last Thing: We always create a "version.txt" file -->
-    <property name="version.file"	value="${target.dir}/version.file"/>
+    <!-- ========================================================== 
+		       TARGETS
+	 ==========================================================  -->
 
     <target name="clean"
 	description="Cleans all built artifacts and the Ivy Cache">
@@ -193,35 +235,63 @@
 	<delete dir="${target.dir}"/>
     </target>
 
-    <!-- Private targets should start with a dash and contain no
-	 description -->
-
     <target name="-resolve">
 	<ivy:resolve
 	    haltonfailure="${ivy.resolve.haltonfailure}"
 	    log="${ivy.log}"/>
     </target>
 
-    <target name="compile"
-	description="Compiles the Java source code"
+    <target name="-main.classpath"
 	depends="-resolve">
-
 	<ivy:cachepath pathid="main.classpath"
 	    conf="compile,provided"
 	    log="${ivy.log}"/>
+    </target>
+
+    <!-- Used by wars and ears -->
+    <target name="-ivy.retrieve"
+	depends="-resolve">
+	<ivy:retrieve log="${ivy.log}"
+	    pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]"/>
+    </target>
+
+    <!-- If there are generated sources, this target would need to
+	 "depend upon that too. It is recomemnded that you do a separate
+	 compile for generated sources with "lint" and "deprecation"
+	 turned off. Otherwise, Jenkins will count the generated source
+	 warnings against the project (DELETE COMMENT)
+    -->
+
+    <target name="compile"
+	description="Compiles the Java source code"
+	depends="-main.classpath">
 
 	<mkdir dir="${main.destdir}"/>
 
 	<javac.macro destdir="${main.destdir}"
+	    lint="${javac.lint}"
+	    deprecation="${javac.deprecation}"
+	    source="${javac.source}"
+	    target="${javac.target}"
 	    fork="${javac.fork}">
 	    <src path="${main.srcdir}"/>
-	    <exclude name="test/**"/>
 	    <classpath refid="main.classpath"/>
 	</javac.macro>
+
+	<!-- Handling Generated Sources
+	<javac.macro destdir="${main.destdir}"
+	    lint="false"
+	    deprecation="false"
+	    target="${javac.target}"
+	    fork="${javac.fork}">
+	    <src path="${wsld.srcdir}"/>
+	    <classpath refid="main.classpath"/>
+	    <classpath path="${main.destdir}"/>
+	</javac.macro>
+	-->
     </target>
 
     <target name="test-compile"
-	if="run.junit.tests"
 	depends="compile"
 	description="Compile the JUnit tests">
 
@@ -232,7 +302,9 @@
 	<mkdir dir="${test.destdir}"/>
 
 	<javac.macro destdir="${test.destdir}"
-	    fork="${javac.fork}"/>
+	    lint="${javac.lint}"
+	    deprecation="${javac.deprecation}"
+	    fork="${javac.fork}">
 	    <src path="${test.srcdir}"/>
 	    <classpath refid="test.classpath"/>
 	    <classpath refid="${main.destdir}"/>
@@ -256,77 +328,52 @@
 
 
 	<mkdir dir="${junit.batch.todir}"/>
-	<if>
-	    <istrue value="${junit.fork}"/>
-	    <then>
-		<jacoco.coverage>
-		    <junit fork="true"
-			maxmemory="${junit.maxmemory}"
-			jvm="${javac.executable}"
-			includeAntRuntime="${junit.includeAntRuntime}">
-			<classpath>
-			    <pathelement path="${main.destdir}"/>
-			    <pathelement path="${test.destdir}"/>
-			</classpath>
-			<classpath refid="test.classpath"/>
-			<formatter type="${junit.formatter.type}"/>
-			<batchtest
-			    todir="${junit.batchtest.todir}">
-			    <fileset dir="${test.destdir}"/>
-			</batchtest>
-		    </junit>
-		</jacoco.coverage>
-	    </then>
-	    <else>
-		<junit fork="false"
-		    includeAntRuntime="${junit.includeAntRuntime}">
-		    <classpath>
-			<pathelement path="${main.destdir}"/>
-			<pathelement path="${test.destdir}"/>
-		    </classpath>
-		    <classpath refid="test.classpath"/>
-		    <formatter type="${junit.formatter.type}"/>
-		    <batchtest
-			todir="${junit.batchtest.todir}">
-			<fileset dir="${test.destdir}"/>
-		    </batchtest>
-		</junit>
-	    </else>
-	</if>
+	<jacoco.coverage>
+	    <junit fork="true"
+		maxmemory="${junit.maxmemory}"
+		jvm="${javac.executable}"
+		includeAntRuntime="${junit.includeAntRuntime}">
+		<classpath>
+		    <pathelement path="${main.destdir}"/>
+		    <pathelement path="${test.destdir}"/>
+		</classpath>
+		<classpath refid="test.classpath"/>
+		<formatter type="${junit.formatter.type}"/>
+		<batchtest
+		    todir="${junit.batchtest.todir}">
+		    <fileset dir="${test.destdir}"/>
+		</batchtest>
+	    </junit>
+	</jacoco.coverage>
     </target>
+
+    <!-- The "package" target should build all of your targets, so that everyone
+	 knows if they want to build the packages, they can use "package".
+	 The "package" target normally just depends on all of your packages"
+	 (DELETE COMMENT)
+    -->
 
     <target name="package"
 	description="Builds all the packages for deployment"
 	depends="jar,war,ear"/>
 
     <target name="jar"
-	if="build.jar"
 	depends="compile">
 
 	<!-- jar.macro automatically adds the Maven and Build info -->
-	<jar.macro destfile="${jar.destfile}">
+	<jar.macro destfile="${maven.dir}/${jar.name}/${jar.name}">
 	    <fileset dir="${main.destdir}"/>
 	    <fileset dir="${main.resources.dir}"/>
 	</jar.macro>
     </target>
 
-    <target name="-retrieve.jars"
-	depends="-resolve">
-	<ivy:retrieve conf="runtime"
-	    pathid="package.lib.classpath"
-	    setid="package.lib.fileset"
-	    pattern="${war.lib.dir}/[artifact].[ext]"
-	    log="${ivy.log}"/>
-    </target>
-
     <target name="war"
-	if="build.war"
-	depends="compile,-retrieve.jars">
+	depends="compile,-ivy.retrieve">
 
 	<!-- war.macro automatically adds the Maven and Build info -->
-	<war.macro destfile="${war.destfile}"
+	<war.macro destfile="${archive.dir}/${war.name}"
 	    webxml="${webapp.dir}/WEB-INF/web.xml">
-	    <lib dir="${war.lib.dir}"/>
+	    <lib dir="${lib.dir}/runtime"/>
 	    <classes dir="${main.destdir}"/>
 	    <webinf dir="${main.resources.dir}/WEB-INF">
 		<exclude name="web.xml"/>
@@ -337,13 +384,12 @@
     </target>
 
     <target name="ear"
-	if="build.ear"
-	depends="-resolve,-retrieve.jars">
+	depends="-ivy.retrieve">
 
 	<!-- ear.macro automatically adds the Maven and Build info -->
-	<ear.macro destfile="${ear.destfile}"
+	<ear.macro destfile="${archive.dir}/${ear.name}"
 	    appxml="${main.resources.dir}/WEB-INF/application.xml">
-	    <fileset dir="${war.lib.dir}"/>
+	    <fileset dir="${lib.dir}runtime"/>
 	    <zipfileset dir="${main.resources.dir}" prefix="${WEB-INF}">
 		<exclude name="application.xml"/>
 	    </zipfileset>
@@ -351,6 +397,7 @@
 	</ear.macro>
     </target>
 
+    <!-- Runs all of the site reports -->
     <target name="site"
 	depends="ivy.report,findbugs,pmd,cpd,checkstyle,javadoc,jacoco"
 	description="Produces a whole slew of reports"/>
@@ -367,21 +414,22 @@
 	description="Produce the Javadocs">
 	<mkdir dir="${target.dir}/javadoc"/>
 	<javadoc sourcepath="${main.srcdir}"
-	    destdir="${target.dir}/javadoc"
+	    destdir="${javadoc.destdir}"
 	    version="true"
 	    author="true"
 	    header="true"
 	    footer="true"
-	    bottom="true"
-	    source="${javac.source}"/>
+	    bottom="true"/>
     </target>
 
     <target name="findbugs"
 	depends="compile"
 	description="Run the findbugs report for Jenkins">
 
-	<findbugs.macro>
-	    <auxClasspath refid="compile.classpath"/>
+	<findbugs.macro
+	    output="${findbugs.output}"
+	    outputFile="${target.dir}/findbugs.${findbugs.output}">
+	    <auxClasspath refid="main.classpath"/>
 	    <class location="${main.destdir}"/>
 	    <sourcePath path="${main.srcdir}"/>
 	</findbugs.macro>
@@ -392,8 +440,9 @@
 
 	<mkdir dir="${target.dir}"/>
 
-	<!-- Use this to run all rulesets -->
-	<pmd.macro>
+	<pmd.macro
+	    file.type="${pmd.formatter.type}"
+	    file.name="${target.dir}/pmd.${pmd.output}">
 	    <source>
 		<fileset dir="${main.srcdir}"/>
 	    </source>
@@ -405,7 +454,9 @@
 
 	<mkdir dir="${target.dir}"/>
 
-	<cpd.macro>
+	<cpd.macro
+	    format="${cpd.format}"
+	    outputFile="${target.dir}/cpd.${cpd.format}">
 	    <fileset dir="${main.srcdir}">
 		<include name="**/*.java"/>
 	    </fileset>
@@ -415,15 +466,16 @@
     <target name="checkstyle"
 	description="Check Source Code Styles">
 
-	<checkstyle.macro>
+	<checkstyle.macro
+	    formatter.type="${checkstyle.formatter.type}"
+	    formatter.toFile="${target.dir}/checkstyle.${checkstyle.formatter.type}">
 	    <fileset dir="${main.srcdir}"/>
 	</checkstyle.macro>
     </target>
 
     <target name="jacoco"
 	description="Produce the JaCoCo coverage report from the instrumented JaCoCo JUnit tasks"
-	depends="test"
-	if="run.junit.tests">
+	depends="test">
 
 	<jacoco.report>
 	    <sourcefiles>
@@ -435,7 +487,8 @@
 	</jacoco.report>
     </target>
 
-    <target name="all" depends="clean,package,test,site"
+    <target name="all" 
+	depends="clean, package, test, site"
 	description="Jenkins Target. Cleans everything and runs everything"/>
 
 </project>

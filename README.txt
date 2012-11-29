@@ -14,6 +14,9 @@ tools that you need for doing your builds. Right now these include:
   errors.
 * CPD - Copy Paste Detector - Checks code for large amounts of copy
   and pasted code.
+* JaCoCo - Java Code Coverage. Like Emma or Cobertura, but this project
+  is being kept up to date. Emma and Cobertura have not seen changes in
+  a long while.
 
 It also includes the Ant Contrib tasks
 (http://ant-contrib.sourceforge.net). These extentions help make it
@@ -161,10 +164,10 @@ Default target: package
 STANDARD DIRECTORY STRUCTURE
 ============================
 
-There are several Macros that expect the standard Maven directory
-structure. The exception will be a directory called ${basedir}/archive.
-Any files in this directory will be automatically archived by the
-Jenkins CI system.
+We will standardize on the Maven directory structure. Except there will
+be a directory called ${basedir}/archive. Any files in this directory
+will be automatically archived by the Jenkins CI system.
+
 
 * src/main/java - All current java source files
 
@@ -209,12 +212,15 @@ JENKINS EXPECTED OUTPUT
 =======================
 
 * target/findbugs.xml     - Findbugs Output
-* target/apidocs/         - Location of all Javadocs
+* target/apidocs/        - Location of all Javadocs
 * target/surfire-tests/   - All tests in XML format
 * target/pmd.xml          - PMD output
 * target/cpd.xml          - CPD output
 * target/checkstyles.xml  - Checkstyles output
 * target/archive/         - File to save for this build
+* target/maven/		  - Where the Maven distributed jars are stored.
+                            There should be a sub directory for each
+			    jar file that is being deployed to Maven
 
 
 BUILD WORKINGS
@@ -305,7 +311,7 @@ into your META-INF/maven directory. It will also put
 Jenkins build information and Maven information into
 your MANIFEST.MF file:
 
-    <jar.macro destfile="${target.dir}/{$jar.name}.jar">
+    <jar.macro destfile="${maven.dir}/${jar.name}/{$jar.name}">
 	<fileset dir="${main.destdir}"/>
 	<fileset dir="${main.resouces}"/>
     </jar.macro>
