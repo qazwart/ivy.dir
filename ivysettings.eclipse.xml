@@ -17,9 +17,8 @@
    under the License.    
 -->
 <ivysettings>
-    <caches defaultCacheDir="${ivy.default.ivy.user.dir}/cache-0"/>
     <settings defaultResolver="default"/>
-    <include file="${ivy.default.ivy.user.dir}/ivysettings-public.xml"/>
+    <include file="ivysettings-public.xml"/>
     <include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
     <include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
     <include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>

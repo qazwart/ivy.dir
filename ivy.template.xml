@@ -1,4 +1,6 @@
-<ivy-module version="1.0">
+<ivy-module version="1.0"
+    xmlns:maven="http://maven.apache.org">
+
     <!-- HOW TO USE THIS FILE -->
 
     <!-- 1. In the <info> section, set your module name and revision -->
@@ -73,8 +75,8 @@
     <dependencies>
 	<!-- Examples -->
 	<!-- Jar for compilation -->
-	<dependency org="commons-logging"	name="commons-logging"
-	    rev="1.1.1"		conf="compile->default"/>
+	<dependency org="commons-logging" name="commons-logging"
+	    rev="1.1.1" conf="compile->default"/>
 
 	<!-- Using Property from ivy.version.properties file -->
 	<!-- The generated pom will have the correct version in it -->
@@ -86,7 +88,7 @@
 	    rev="1.1.1" type="javadoc" ext="jar" conf="javadoc->default"/>
 
 	<!-- For testing only -->
-	<dependency org="junit"			name="junit"
-	    rev="4.10"		conf="test->default"/> 
+	<dependency org="junit" name="junit"
+	    rev="4.10" conf="test->default"/> 
     </dependencies>
 </ivy-module>

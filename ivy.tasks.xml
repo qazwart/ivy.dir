@@ -13,9 +13,9 @@
 
     <property environment="env"/>
 
-    <property name="env.BUILD_NUMBER"	value="dev build"/>
-    <property name="env.JOB_NAME"	value="dev build"/>
-    <property name="env.SVN_REVISION"	value="dev build"/>
+    <property name="env.BUILD_NUMBER"	value="dev-build"/>
+    <property name="env.JOB_NAME"	value="dev-build"/>
+    <property name="env.SVN_REVISION"	value="dev-build"/>
 
     <!-- Add Ivy Tasks -->
     <taskdef uri="http://ant.apache.org/ivy"
@@ -30,7 +30,7 @@
 
     <!-- Add Findbugs Task -->
     <property name="findbugs.home"
-	value="${ivy.dir}/findbugs/findbugs-2.0.1"/>
+	value="${ivy.dir}/findbugs/findbugs-2.0.2"/>
     <property name="findbugs.default.output" value="xml"/>
 
     <taskdef resource="edu/umd/cs/findbugs/anttask/tasks.properties">
@@ -634,14 +634,6 @@ artifactId=${ivy.module}
 			<attribute name="Build-Date"	value="${build.date}"/>
 		    </section>
 		</manifest>
-		<zipfileset dir="@{pom.properties.dir}"
-		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
-		    <include name="@{pom.properties}"/>
-		</zipfileset>
-		<zipfileset dir="@{pom.xml.dir}"
-		    prefix="META-INF/maven/${ivy.organisation}/${ivy.module}">
-		    <include name="@{pom.xml}"/>
-		</zipfileset>
 		<includes/>
 	    </ear>
 	</sequential>
@@ -730,6 +722,67 @@ Build-Date:   ${build.date}
 		</fileset>
 		<includes/>
 	    </tar>
+	</sequential>
+    </macrodef>
+
+    <macrodef name="test.templates">
+	<attribute name="answers.dir"/>
+	<attribute name="template.root.dir"	default="${basedir}"/>
+	<attribute name="autoconfig.pl"		default="${ivy.dir}/scripts/autoconfig.pl"/>
+	<sequential>
+	    <!-- First: Verify Perl is installed -->
+	    <trycatch property="perl.not.available">
+		<try>
+		    <exec executable="perl"
+			outputproperty="temp.property"
+			append="true"
+			failonerror="true">
+			<arg value="-v"/>
+		    </exec>
+		    <echo>Perl is installed. Template tests will execute</echo>
+		</try>
+		<catch>
+		    <echo>Perl not installed. Cannot test auto-configuration or templates
+			install Perl from http://strawberryperl.com to run template test.
+		    </echo>
+		</catch>
+	    </trycatch>
+	    <!-- Perl is installed: Run template tests -->
+	    <if>
+		<not>
+		    <isset property="perl.not.available"/>
+		</not>
+		<then>
+		    <!-- First verify the templates are good -->
+		    <echo>${line.separator}Testing whether autoconfig templates have errors</echo>
+		    <echo>Executing from @{template.root.dir}</echo>
+		    <exec executable="perl"
+			dir="@{template.root.dir}"
+			failonerror="true">
+			<arg value="@{autoconfig.pl}"/>
+			<arg value="-test"/>
+			<arg value="templates"/>
+		    </exec>
+		    <!-- Templates are valid: Checking answer files for completeness -->
+		    <echo>${line.separator}Template files are good. Checking whether answers are complete</echo>
+		    <for param="answer.file">
+			<fileset dir="@{answers.dir}">
+			    <include name="*.answers"/>
+			</fileset>
+			<sequential>
+			    <echo>Checking Answer file @{answer.file}</echo>
+			    <exec executable="perl"
+				dir="@{template.root.dir}">
+				<arg value="@{autoconfig.pl}"/>
+				<arg value="-test"/>
+				<arg value="all"/>
+				<arg value="-answer"/>
+				<arg value="@{answer.file}"/>
+			    </exec>
+			</sequential>
+		    </for>
+		</then>
+	    </if>
 	</sequential>
     </macrodef>
 </project>
